@@ -35,10 +35,8 @@ def get_next_open_row(board, col):
 
 def print_board(board):
     print("\nCurrent Board:")
-    # reverse the row order for printing
-    for r in range(ROW_COUNT):
-        row_index = ROW_COUNT - 1 - r
-        print(" ".join(str(int(x)) for x in board[row_index]))
+    for r in range(ROW_COUNT):  # top (0) → bottom (5)
+        print(" ".join(str(int(x)) for x in board[r]))
 
 
 
