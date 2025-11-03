@@ -3,9 +3,8 @@ import numpy as np
 # Constants
 ROW_COUNT = 6
 COL_COUNT = 7
-
-PLAYER_PIECE = 1
-AI_PIECE = 2
+PLAYER1_PIECE = 1
+PLAYER2_PIECE = 2
 EMPTY = 0
 
 
@@ -35,8 +34,11 @@ def get_next_open_row(board, col):
 
 
 def print_board(board):
-    """Print board in a readable grid format (bottom row printed last)."""
-    print(np.flip(board, 0))
+    print("\nCurrent Board:")
+    # reverse the row order for printing
+    for r in range(ROW_COUNT):
+        row_index = ROW_COUNT - 1 - r
+        print(" ".join(str(int(x)) for x in board[row_index]))
 
 
 
@@ -99,32 +101,41 @@ if __name__ == "__main__":
     turn = 0
 
     while not game_over:
-        # Player 1 Input
-        if turn == 0:
-            col = int(input("Player 1 make your move (0-6): "))
+        try:
+            # Ask player for input
+            col = input(f"Player {turn + 1} make your move (0–6): ")
 
-            if is_valid_location(board, col):
-                row = get_next_open_row(board, col)
-                drop_piece(board, row, col, PLAYER_PIECE)
+            # Validate input is numeric
+            if not col.isdigit():
+                print("Invalid input — please enter a number between 0 and 6.")
+                continue
 
-                if winning_move(board, PLAYER_PIECE):
-                    print_board(board)
-                    print("PLAYER 1 WINS!!")
-                    game_over = True
+            col = int(col)
 
-        # Player 2 Input
-        else:
-            col = int(input("Player 2 make your move (0-6): "))
+            # Validate input range
+            if col < 0 or col >= COL_COUNT:
+                print("Invalid column — choose a number between 0 and 6.")
+                continue
 
-            if is_valid_location(board, col):
-                row = get_next_open_row(board, col)
-                drop_piece(board, row, col, AI_PIECE)
+            # Validate column availability
+            if not is_valid_location(board, col):
+                print("That column is full. Try another one.")
+                continue
 
-                if winning_move(board, AI_PIECE):
-                    print_board(board)
-                    print("PLAYER 2 WINS!!")
-                    game_over = True
+            # Drop the piece
+            row = get_next_open_row(board, col)
+            piece = PLAYER1_PIECE if turn == 0 else PLAYER2_PIECE
+            drop_piece(board, row, col, piece)
 
-        print_board(board)
-        turn += 1
-        turn %= 2
+            print_board(board)
+
+            if winning_move(board, piece):
+                print(f"Player {turn + 1} wins!")
+                game_over = True
+                break
+
+            # Alternate turns
+            turn = (turn + 1) % 2
+
+        except Exception as e:
+            print(f"Error: {e}. Please try again.")

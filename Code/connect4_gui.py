@@ -13,8 +13,8 @@ from connect4_board import (
     winning_move,
     ROW_COUNT,
     COL_COUNT,
-    PLAYER_PIECE,
-    AI_PIECE,
+    PLAYER1_PIECE,
+    PLAYER2_PIECE,
 )
 
 # CONFIG
@@ -55,9 +55,9 @@ def draw_board(board):
             screen.blit(img_empty, (x, y))
 
             # Draw pieces
-            if board[r][c] == PLAYER_PIECE:
+            if board[r][c] == PLAYER1_PIECE:
                 screen.blit(img_red_piece, (x, y))
-            elif board[r][c] == AI_PIECE:
+            elif board[r][c] == PLAYER2_PIECE:
                 screen.blit(img_yellow_piece, (x, y))
 
     pygame.display.update()
@@ -104,15 +104,15 @@ def main():
 
                 if is_valid_location(board, col):
                     row = get_next_open_row(board, col)
-                    piece = PLAYER_PIECE if turn == 0 else AI_PIECE
+                    piece = PLAYER1_PIECE if turn == 0 else PLAYER2_PIECE
                     drop_piece(board, row, col, piece)
 
                     draw_board(board)
 
                     # WIN CHECK
                     if winning_move(board, piece):
-                        color = (255, 0, 0) if piece == PLAYER_PIECE else (255, 255, 0)
-                        message = "Player 1 (Red) Wins!" if piece == PLAYER_PIECE else "Player 2 (Yellow) Wins!"
+                        color = (255, 0, 0) if piece == PLAYER1_PIECE else (255, 255, 0)
+                        message = "Player 1 (Red) Wins!" if piece == PLAYER1_PIECE else "Player 2 (Yellow) Wins!"
                         display_message(message, color)
                         pygame.display.update()
                         pygame.time.wait(3000)
