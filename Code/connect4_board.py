@@ -37,7 +37,13 @@ def print_board(board):
     print("\nCurrent Board:")
     for r in range(ROW_COUNT):  # top (0) → bottom (5)
         print(" ".join(str(int(x)) for x in board[r]))
+        
 
+def valid_board(board):
+    for c in range(COL_COUNT):
+        if(is_valid_location(board, c)):
+            return True
+    return False
 
 
 # Win Checking Logic
@@ -98,7 +104,7 @@ if __name__ == "__main__":
     game_over = False
     turn = 0
 
-    while not game_over:
+    while valid_board(board):
         try:
             # Ask player for input
             col = input(f"Player {turn + 1} make your move (0–6): ")
