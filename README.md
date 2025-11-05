@@ -1,5 +1,4 @@
 # CSCI-331-04-Group-8
 
 Group Members and Contributions: 
-    Luke Sims:
-    
+    Luke Sims, Om Malkam:
