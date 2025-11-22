@@ -16,13 +16,15 @@ class position:
 
     def get_board(self):
         return self.board
+    
+    def get_move(self):
+        return self.move_num
 
     def drop_piece(self, col, piece):
         """Place the player's piece in the board at (row, col)."""
         row = self.get_next_open_row(col)
         self.board[row][col] = piece
         self.move_num += 1
-
 
     def is_valid_location(self, col):
         """Return True if the top cell in a column is empty."""
