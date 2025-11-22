@@ -21,7 +21,7 @@ IMG_YELLOW_PIECE = ART_PATH + "yellow piece-export.png"
 # INITIALIZE PYGAME
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Connect 4 - AI Project")
+pygame.display.set_caption("Connect 4")
 font = pygame.font.SysFont("arial", 60, bold=True)
 
 # Load and scale images
