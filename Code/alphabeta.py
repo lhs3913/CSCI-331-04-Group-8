@@ -3,26 +3,33 @@ import numpy as np
 import sys
 import copy
 
-def negmax(position=c4.position):
+def alphabeta(alpha, beta, position=c4.position):
     piece = c4.PLAYER1_PIECE if position.get_move()%2 == 0 else c4.PLAYER2_PIECE
-    best_position = position
+    best_position = copy.deepcopy(position)
     if(position.tie_board()):
         return [0, best_position]; 
     for col in range(c4.COL_COUNT):
         if(position.is_valid_location(col) and position.winning_move(piece)):
             return [(c4.COL_COUNT*c4.ROW_COUNT+1 - position.get_move())/2,best_position]
         
+    maximum = (c4.COL_COUNT*c4.ROW_COUNT-1 - position.get_move())/2;	
+    if(beta > maximum):
+        beta = maximum                     
+        if(alpha >= beta):
+            return [beta, best_position]
+        
     best_score = -c4.COL_COUNT*c4.ROW_COUNT
     for col in range(c4.COL_COUNT):
         if(position.is_valid_location(col)):
             next_posistion = copy.deepcopy(position)
             next_posistion.drop_piece(col, piece)
-            score = -negmax(next_posistion)[0]
+            score = -alphabeta(-beta, -alpha, next_posistion)[0]
             if(score>best_score): 
                 best_score = score
                 best_position = next_posistion
-                 
-    return [best_score, best_position]
+                if(score >= beta): return [score,best_position]  
+                if(score > alpha): alpha = score
+    return [alpha,best_position]         
 
 if __name__ == "__main__":
     try:
@@ -74,6 +81,6 @@ if __name__ == "__main__":
             except Exception as e:
                 print(f"Error: {e}. Please try again.")
         else:
-            board = negmax(board)[1]
+            board = alphabeta(-float("inf"), float("inf"), board)[1]
             board.print_board()
             turn = (turn + 1) % 2
