@@ -8,103 +8,103 @@ PLAYER2_PIECE = 2
 EMPTY = 0
 
 
-# Board Setup
-def create_board():
-    """Create a 6x7 Connect 4 board initialized with zeros."""
-    board = np.zeros((ROW_COUNT, COL_COUNT), dtype=int)
-    return board
+class position:
+    def __init__(self):
+        """Create a 6x7 Connect 4 board initialized with zeros."""
+        self.board = np.zeros((ROW_COUNT, COL_COUNT), dtype=int)
+        self.move_num = 0
+
+    def get_board(self):
+        return self.board
+
+    def drop_piece(self, col, piece):
+        """Place the player's piece in the board at (row, col)."""
+        row = self.get_next_open_row(col)
+        self.board[row][col] = piece
+        self.move_num += 1
 
 
-def drop_piece(board, row, col, piece):
-    """Place the player's piece in the board at (row, col)."""
-    board[row][col] = piece
+    def is_valid_location(self, col):
+        """Return True if the top cell in a column is empty."""
+        return self.board[0][col] == EMPTY
 
 
-def is_valid_location(board, col):
-    """Return True if the top cell in a column is empty."""
-    return board[0][col] == EMPTY
+    def get_next_open_row(self, col):
+        """Find the lowest empty row in a column."""
+        for r in range(ROW_COUNT - 1, -1, -1):
+            if self.board[r][col] == EMPTY:
+                return r
+        return None
 
 
-def get_next_open_row(board, col):
-    """Find the lowest empty row in a column."""
-    for r in range(ROW_COUNT - 1, -1, -1):
-        if board[r][col] == EMPTY:
-            return r
-    return None
-
-
-def print_board(board):
-    print("\nCurrent Board:")
-    for r in range(ROW_COUNT):  # top (0) → bottom (5)
-        print(" ".join(str(int(x)) for x in board[r]))
+    def print_board(self):
+        print("\nCurrent Board:")
+        for r in range(ROW_COUNT):  # top (0) → bottom (5)
+            print(" ".join(str(int(x)) for x in self.board[r]))
         
 
-def valid_board(board):
-    for c in range(COL_COUNT):
-        if(is_valid_location(board, c)):
-            return True
-    return False
+    def tie_board(self):
+        return self.move_num == ROW_COUNT*COL_COUNT
 
 
-# Win Checking Logic
-def winning_move(board, piece):
-    """Check all directions for a 4-in-a-row."""
-    # Check horizontal locations
-    for c in range(COL_COUNT - 3):
-        for r in range(ROW_COUNT):
-            if (
-                board[r][c] == piece
-                and board[r][c + 1] == piece
-                and board[r][c + 2] == piece
-                and board[r][c + 3] == piece
-            ):
-                return True
+    # Win Checking Logic
+    def winning_move(self, piece):
+        """Check all directions for a 4-in-a-row."""
+        # Check horizontal locations
+        for c in range(COL_COUNT - 3):
+            for r in range(ROW_COUNT):
+                if (
+                    self.board[r][c] == piece
+                    and self.board[r][c + 1] == piece
+                    and self.board[r][c + 2] == piece
+                    and self.board[r][c + 3] == piece
+                ):
+                    return True
 
-    # Check vertical locations
-    for c in range(COL_COUNT):
-        for r in range(ROW_COUNT - 3):
-            if (
-                board[r][c] == piece
-                and board[r + 1][c] == piece
-                and board[r + 2][c] == piece
-                and board[r + 3][c] == piece
-            ):
-                return True
+        # Check vertical locations
+        for c in range(COL_COUNT):
+            for r in range(ROW_COUNT - 3):
+                if (
+                    self.board[r][c] == piece
+                    and self.board[r + 1][c] == piece
+                    and self.board[r + 2][c] == piece
+                    and self.board[r + 3][c] == piece
+                ):
+                    return True
 
-    # Check positively sloped diagonals
-    for c in range(COL_COUNT - 3):
-        for r in range(ROW_COUNT - 3):
-            if (
-                board[r][c] == piece
-                and board[r + 1][c + 1] == piece
-                and board[r + 2][c + 2] == piece
-                and board[r + 3][c + 3] == piece
-            ):
-                return True
+        # Check positively sloped diagonals
+        for c in range(COL_COUNT - 3):
+            for r in range(ROW_COUNT - 3):
+                if (
+                    self.board[r][c] == piece
+                    and self.board[r + 1][c + 1] == piece
+                    and self.board[r + 2][c + 2] == piece
+                    and self.board[r + 3][c + 3] == piece
+                ):
+                    return True
 
-    # Check negatively sloped diagonals
-    for c in range(COL_COUNT - 3):
-        for r in range(3, ROW_COUNT):
-            if (
-                board[r][c] == piece
-                and board[r - 1][c + 1] == piece
-                and board[r - 2][c + 2] == piece
-                and board[r - 3][c + 3] == piece
-            ):
-                return True
+        # Check negatively sloped diagonals
+        for c in range(COL_COUNT - 3):
+            for r in range(3, ROW_COUNT):
+                if (
+                    self.board[r][c] == piece
+                    and self.board[r - 1][c + 1] == piece
+                    and self.board[r - 2][c + 2] == piece
+                    and self.board[r - 3][c + 3] == piece
+                ):
+                    return True
 
-    return False
+        return False
 
 
 
 if __name__ == "__main__":
-    board = create_board()
-    print_board(board)
+    board = position()
+    board.print_board()
 
-    game_over = False
     turn = 0
 
-    while valid_board(board):
+    while not(board.tie_board()):
         try:
             # Ask player for input
             col = input(f"Player {turn + 1} make your move (0–6): ")
@@ -122,20 +122,17 @@ if __name__ == "__main__":
                 continue
 
             # Validate column availability
-            if not is_valid_location(board, col):
+            if not board.is_valid_location(col):
                 print("That column is full. Try another one.")
                 continue
 
             # Drop the piece
-            row = get_next_open_row(board, col)
             piece = PLAYER1_PIECE if turn == 0 else PLAYER2_PIECE
-            drop_piece(board, row, col, piece)
+            board.drop_piece(col, piece)
+            board.print_board()
 
-            print_board(board)
-
-            if winning_move(board, piece):
+            if board.winning_move(piece):
                 print(f"Player {turn + 1} wins!")
-                game_over = True
                 break
 
             # Alternate turns

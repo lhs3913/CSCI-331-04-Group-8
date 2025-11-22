@@ -5,22 +5,12 @@
 import pygame
 import sys
 import numpy as np
-from connect4_board import (
-    create_board,
-    drop_piece,
-    is_valid_location,
-    get_next_open_row,
-    winning_move,
-    ROW_COUNT,
-    COL_COUNT,
-    PLAYER1_PIECE,
-    PLAYER2_PIECE,
-)
+import connect4_board as c4
 
 # CONFIG
 TILE_SIZE = 100
-SCREEN_WIDTH = COL_COUNT * TILE_SIZE
-SCREEN_HEIGHT = (ROW_COUNT + 1) * TILE_SIZE  # extra row for preview area
+SCREEN_WIDTH = c4.COL_COUNT * TILE_SIZE
+SCREEN_HEIGHT = (c4.ROW_COUNT + 1) * TILE_SIZE  # extra row for preview area
 
 # Art file paths
 ART_PATH = "./Resources/art/"
@@ -46,8 +36,8 @@ img_yellow_piece = load_image(IMG_YELLOW_PIECE)
 # DRAW BOARD
 def draw_board(board):
     """Draws the current board state with images."""
-    for c in range(COL_COUNT):
-        for r in range(ROW_COUNT):
+    for c in range(c4.COL_COUNT):
+        for r in range(c4.ROW_COUNT):
             x = c * TILE_SIZE
             y = (r + 1) * TILE_SIZE  # offset by one tile for top row
 
@@ -55,9 +45,9 @@ def draw_board(board):
             screen.blit(img_empty, (x, y))
 
             # Draw pieces
-            if board[r][c] == PLAYER1_PIECE:
+            if board[r][c] == c4.PLAYER1_PIECE:
                 screen.blit(img_red_piece, (x, y))
-            elif board[r][c] == PLAYER2_PIECE:
+            elif board[r][c] == c4.PLAYER2_PIECE:
                 screen.blit(img_yellow_piece, (x, y))
 
     pygame.display.update()
@@ -74,13 +64,11 @@ def display_message(message, color=(255, 255, 255)):
 
 # MAIN GAME LOOP
 def main():
-    board = create_board()
-    game_over = False
+    board = c4.position()
     turn = 0  # 0 = Player 1 (Red), 1 = Player 2 (Yellow)
 
-    draw_board(board)
-
-    while not game_over:
+    draw_board(board.get_board())
+    while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -102,21 +90,21 @@ def main():
                 posx = event.pos[0]
                 col = int(np.floor(posx / TILE_SIZE))
 
-                if is_valid_location(board, col):
-                    row = get_next_open_row(board, col)
-                    piece = PLAYER1_PIECE if turn == 0 else PLAYER2_PIECE
-                    drop_piece(board, row, col, piece)
+                if board.is_valid_location(col):
+                    piece = c4.PLAYER1_PIECE if turn == 0 else c4.PLAYER2_PIECE
+                    board.drop_piece(col, piece)
 
-                    draw_board(board)
+                    draw_board(board.get_board())
 
                     # WIN CHECK
-                    if winning_move(board, piece):
-                        color = (255, 0, 0) if piece == PLAYER1_PIECE else (255, 255, 0)
-                        message = "Player 1 (Red) Wins!" if piece == PLAYER1_PIECE else "Player 2 (Yellow) Wins!"
+                    if board.winning_move(piece):
+                        color = (255, 0, 0) if piece == c4.PLAYER1_PIECE else (255, 255, 0)
+                        message = "Player 1 (Red) Wins!" if piece == c4.PLAYER1_PIECE else "Player 2 (Yellow) Wins!"
                         display_message(message, color)
                         pygame.display.update()
                         pygame.time.wait(3000)
-                        game_over = True
+                        pygame.quit()
+                        sys.exit()
                         break
 
                     # Switch turns
