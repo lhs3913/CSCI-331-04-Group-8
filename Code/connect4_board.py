@@ -6,7 +6,7 @@ COL_COUNT = 7
 PLAYER1_PIECE = 1
 PLAYER2_PIECE = 2
 EMPTY = 0
-BOARD_FILE = "./Resources/boards/invalid peices amount.txt"
+BOARD_FILE = "./Resources/boards/blank board.txt"
 
 class position:
     def __init__(self):
@@ -126,6 +126,8 @@ class position:
         print("\nCurrent Board:")
         for r in range(ROW_COUNT):
             print(" ".join(str(int(x)) for x in self.board[r]))
+        print("-" * 13)
+        print("0 1 2 3 4 5 6")
         
     def tie_board(self):
         return self.move_num >= ROW_COUNT*COL_COUNT
@@ -166,3 +168,43 @@ class position:
 if __name__ == "__main__":
     board = position()
     board.print_board()
+    
+    # Initialize turn based on the loaded file
+    turn = board.current_turn
+
+    while not(board.tie_board()):
+        try:
+            # Ask player for input
+            col_input = input(f"Player {turn + 1} make your move (0–6): ")
+
+            # Validate input is numeric
+            if not col_input.isdigit():
+                print("Invalid input — please enter a number between 0 and 6.")
+                continue
+
+            col = int(col_input)
+
+            # Validate input range
+            if col < 0 or col >= COL_COUNT:
+                print("Invalid column — choose a number between 0 and 6.")
+                continue
+
+            # Validate column availability
+            if not board.is_valid_location(col):
+                print("That column is full. Try another one.")
+                continue
+
+            # Drop the piece
+            piece = PLAYER1_PIECE if turn == 0 else PLAYER2_PIECE
+            board.drop_piece(col, piece)
+            board.print_board()
+
+            if board.winning_move(piece):
+                print(f"Player {turn + 1} wins!")
+                break
+
+            # Alternate turns
+            turn = (turn + 1) % 2
+
+        except Exception as e:
+            print(f"Error: {e}. Please try again.")
