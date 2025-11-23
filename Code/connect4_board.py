@@ -14,11 +14,20 @@ class position:
         self.board = np.zeros((ROW_COUNT, COL_COUNT), dtype=int)
         self.move_num = 0
 
+    def __init__(self, board):
+        """Create a 6x7 Connect 4 board initialized with zeros."""
+        self.board = board
+        self.move_num = 0
+
     def get_board(self):
         return self.board
     
     def get_move(self):
         return self.move_num
+    
+    def copy(self):
+        copy_board = np.copy(self.board)
+        return position(copy_board)
 
     def drop_piece(self, col, piece):
         """Place the player's piece in the board at (row, col)."""

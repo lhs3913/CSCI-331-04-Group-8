@@ -1,22 +1,20 @@
 import connect4_board as c4
 import numpy as np
 import sys
-import copy
 
 def negmax(position=c4.position):
     piece = c4.PLAYER1_PIECE if position.get_move()%2 == 0 else c4.PLAYER2_PIECE
-    best_position = position
+    best_position = position.copy()
     if(position.tie_board()):
         return [0, best_position]; 
-    for col in range(c4.COL_COUNT):
-        if(position.is_valid_location(col) and position.winning_move(piece)):
-            return [(c4.COL_COUNT*c4.ROW_COUNT+1 - position.get_move())/2,best_position]
         
     best_score = -c4.COL_COUNT*c4.ROW_COUNT
     for col in range(c4.COL_COUNT):
         if(position.is_valid_location(col)):
-            next_posistion = copy.deepcopy(position)
+            next_posistion = position.copy
             next_posistion.drop_piece(col, piece)
+            if(next_posistion.winning_move(piece)):
+                return [(c4.COL_COUNT*c4.ROW_COUNT+1 - next_posistion.get_move())/2,next_posistion]
             score = -negmax(next_posistion)[0]
             if(score>best_score): 
                 best_score = score

@@ -1,13 +1,15 @@
 import connect4_board as c4
 import numpy as np
 import sys
+import copy
+
+COL_ORDER = [3,4,2,5,1,6,0]
 
 def alphabeta(alpha, beta, position=c4.position):
     piece = c4.PLAYER1_PIECE if position.get_move()%2 == 0 else c4.PLAYER2_PIECE
-    best_position = position.copy()
+    best_position = position.copy
     if(position.tie_board()):
         return [0, best_position]; 
-        
     maximum = (c4.COL_COUNT*c4.ROW_COUNT-1 - position.get_move())/2;	
     if(beta > maximum):
         beta = maximum                     
@@ -16,9 +18,9 @@ def alphabeta(alpha, beta, position=c4.position):
         
     best_score = -c4.COL_COUNT*c4.ROW_COUNT
     for col in range(c4.COL_COUNT):
-        if(position.is_valid_location(col)):
+        if(position.is_valid_location(COL_ORDER[col])):
             next_posistion = position.copy()
-            next_posistion.drop_piece(col, piece)
+            next_posistion.drop_piece(COL_ORDER[col], piece)
             if(next_posistion.winning_move(piece)):
                 return [(c4.COL_COUNT*c4.ROW_COUNT+1 - next_posistion.get_move())/2,next_posistion]
             score = -alphabeta(-beta, -alpha, next_posistion)[0]
