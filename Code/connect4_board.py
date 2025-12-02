@@ -1,4 +1,5 @@
 import sys
+import copy
 
 # Constants
 ROW_COUNT = 6
@@ -131,6 +132,13 @@ class position:
         
     def tie_board(self):
         return self.move_num >= ROW_COUNT*COL_COUNT
+
+    def copy(self):
+        new_pos = position().__new__(position)
+        new_pos.board = copy.deepcopy(self.board)
+        new_pos.move_num = self.move_num
+        new_pos.current_turn = self.current_turn
+        return new_pos
 
     # Win Checking Logic
     def winning_move(self, piece):
