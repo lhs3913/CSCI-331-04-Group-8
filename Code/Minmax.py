@@ -2,8 +2,9 @@ import connect4_board as c4
 import numpy as np
 import sys
 import heuristic as h
+# Swapped the parameter in order to add depth parameter
 
-def negmax(depth, position=c4.position):
+def negmax(position, depth):
     currentPiece = c4.PLAYER1_PIECE if position.get_move() % 2 == 0 else c4.PLAYER2_PIECE
     if position.winning_move(c4.PLAYER1_PIECE) or position.winning_move(c4.PLAYER2_PIECE):
         score = (c4.COL_COUNT * c4.ROW_COUNT + 1 - position.get_move()) / 2 
