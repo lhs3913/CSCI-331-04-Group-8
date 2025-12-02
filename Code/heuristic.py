@@ -21,19 +21,23 @@ def score_position(board_obj, piece):
     board = board_obj.get_board()
     
     # Score Center Column
-    center_array = [int(i) for i in list(board[:, c4.COL_COUNT//2])]
+    center_col = c4.COL_COUNT // 2
+    # FIX: Use list comprehension instead of numpy slicing
+    center_array = [int(row[center_col]) for row in board]
     center_count = center_array.count(piece)
     score += center_count * 3
 
     # Horizontal
     for r in range(c4.ROW_COUNT):
-        row_array = [int(i) for i in list(board[r, :])]
+        # FIX: Access row directly
+        row_array = [int(i) for i in board[r]]
         for c in range(c4.COL_COUNT - 3):
             score += evaluate_window(row_array[c:c+4], piece)
 
     # Vertical
     for c in range(c4.COL_COUNT):
-        col_array = [int(i) for i in list(board[:, c])]
+        # FIX: Use list comprehension to get column
+        col_array = [int(row[c]) for row in board]
         for r in range(c4.ROW_COUNT - 3):
             score += evaluate_window(col_array[r:r+4], piece)
 

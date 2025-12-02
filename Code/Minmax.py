@@ -2,9 +2,16 @@ import connect4_board as c4
 import numpy as np
 import sys
 import heuristic as h
-# Swapped the parameter in order to add depth parameter
+import time  # Metric: Import time library
+
+# Metric: Global counter for nodes
+NODES_VISITED = 0
 
 def negmax(position, depth):
+    # Metric: Increment counter every time the function is called
+    global NODES_VISITED
+    NODES_VISITED += 1
+
     currentPiece = c4.PLAYER1_PIECE if position.get_move() % 2 == 0 else c4.PLAYER2_PIECE
     if position.winning_move(c4.PLAYER1_PIECE) or position.winning_move(c4.PLAYER2_PIECE):
         score = (c4.COL_COUNT * c4.ROW_COUNT + 1 - position.get_move()) / 2 
@@ -13,7 +20,7 @@ def negmax(position, depth):
     if position.tie_board():
         return [0, position]
     if depth == 0:
-        return [h.score_position.score_position(position, currentPiece), position]
+        return [h.score_position(position, currentPiece), position]
         
     best_score = -float('inf')
     best_position = position.copy()
@@ -42,8 +49,10 @@ if __name__ == "__main__":
         print("Invalid Argument: Please try again")
         sys.exit()
     
-    board = c4.position 
-    board.print_board
+    # FIXED: Added parentheses to initialize the class correctly
+    board = c4.position() 
+    board.print_board()
+    
     while not board.tie_board():
         currentPiece = c4.PLAYER1_PIECE if turn == 0 else c4.PLAYER2_PIECE 
 
@@ -77,8 +86,20 @@ if __name__ == "__main__":
             except Exception as e:
                     print(f"Error: {e}. Please try again.")
         else:
+            print("AI is thinking...")
+            
+            # --- METRICS START ---
+            NODES_VISITED = 0           # Reset counter
+            start_time = time.time()    # Start timer
+            
             # Set a depth of 5 for default running
-            best_move_result = negmax(board, 5)
+            DEPTH = 5
+            best_move_result = negmax(board, DEPTH)
+            
+            end_time = time.time()      # End timer
+            print(f"Stats -> Depth: {DEPTH} | Time: {end_time - start_time:.4f}s | Nodes: {NODES_VISITED}")
+            # --- METRICS END ---
+
             board = best_move_result[1]
             board.print_board()
             if board.winning_move(currentPiece):
