@@ -7,7 +7,7 @@ COL_COUNT = 7
 PLAYER1_PIECE = 1
 PLAYER2_PIECE = 2
 EMPTY = 0
-BOARD_FILE = "./Resources/boards/blank board.txt"
+BOARD_FILE = "./Resources/boards/valid_boards/blank board.txt"
 
 class position:
     def __init__(self):
