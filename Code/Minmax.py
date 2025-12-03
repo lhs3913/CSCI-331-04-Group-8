@@ -5,7 +5,7 @@ import time  # Metric: Import time library
 
 # Metric: Global counter for nodes
 NODES_VISITED = 0
-SEARCH_DEPTH = 5
+SEARCH_DEPTH = 42
 
 def negmax(position, depth):
     # Metric: Increment counter every time the function is called

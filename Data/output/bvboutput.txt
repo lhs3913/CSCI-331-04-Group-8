@@ -1,52 +1,52 @@
 --- STARTING BATTLE: NEGAMAX vs ALPHA-BETA (Depth 4) ---
 Turn  | Player       | Time (s)   | Nodes Visited   | Move Selected
 -----------------------------------------------------------------
-0     | Negamax      | 0.3900     | 2801            | Completed
-1     | Alpha-Beta   | 0.0998     | 673             | Completed
-2     | Negamax      | 0.3794     | 2801            | Completed
-3     | Alpha-Beta   | 0.1114     | 748             | Completed
-4     | Negamax      | 0.4174     | 2801            | Completed
-5     | Alpha-Beta   | 0.0748     | 517             | Completed
-6     | Negamax      | 0.3934     | 2775            | Completed
-7     | Alpha-Beta   | 0.0694     | 459             | Completed
-8     | Negamax      | 0.3575     | 2539            | Completed
-9     | Alpha-Beta   | 0.0659     | 451             | Completed
-10    | Negamax      | 0.3104     | 2278            | Completed
-11    | Alpha-Beta   | 0.0379     | 225             | Completed
-12    | Negamax      | 0.2068     | 1309            | Completed
-13    | Alpha-Beta   | 0.0403     | 245             | Completed
-14    | Negamax      | 0.1115     | 741             | Completed
-15    | Alpha-Beta   | 0.0305     | 199             | Completed
-16    | Negamax      | 0.1063     | 740             | Completed
-17    | Alpha-Beta   | 0.0324     | 194             | Completed
-18    | Negamax      | 0.0877     | 616             | Completed
-19    | Alpha-Beta   | 0.0219     | 136             | Completed
-20    | Negamax      | 0.0502     | 341             | Completed
-21    | Alpha-Beta   | 0.0133     | 86              | Completed
-22    | Negamax      | 0.0504     | 336             | Completed
-23    | Alpha-Beta   | 0.0205     | 131             | Completed
-24    | Negamax      | 0.0486     | 327             | Completed
-25    | Alpha-Beta   | 0.0110     | 69              | Completed
-26    | Negamax      | 0.0196     | 121             | Completed
-27    | Alpha-Beta   | 0.0075     | 43              | Completed
-28    | Negamax      | 0.0178     | 115             | Completed
-29    | Alpha-Beta   | 0.0090     | 46              | Completed
-30    | Negamax      | 0.0128     | 84              | Completed
-31    | Alpha-Beta   | 0.0053     | 38              | Completed
-32    | Negamax      | 0.0041     | 30              | Completed
-33    | Alpha-Beta   | 0.0067     | 44              | Completed
-34    | Negamax      | 0.0020     | 14              | Completed
-35    | Alpha-Beta   | 0.0019     | 12              | Completed
-36    | Negamax      | 0.0008     | 6               | Completed
+0     | Negamax      | 0.8121     | 2801            | Completed
+1     | Alpha-Beta   | 0.1915     | 673             | Completed
+2     | Negamax      | 0.7062     | 2801            | Completed
+3     | Alpha-Beta   | 0.1809     | 748             | Completed
+4     | Negamax      | 0.8102     | 2801            | Completed
+5     | Alpha-Beta   | 0.1749     | 517             | Completed
+6     | Negamax      | 0.8869     | 2775            | Completed
+7     | Alpha-Beta   | 0.1121     | 459             | Completed
+8     | Negamax      | 0.7789     | 2539            | Completed
+9     | Alpha-Beta   | 0.1364     | 451             | Completed
+10    | Negamax      | 0.5070     | 2278            | Completed
+11    | Alpha-Beta   | 0.0552     | 225             | Completed
+12    | Negamax      | 0.3189     | 1309            | Completed
+13    | Alpha-Beta   | 0.0805     | 245             | Completed
+14    | Negamax      | 0.1798     | 741             | Completed
+15    | Alpha-Beta   | 0.0493     | 199             | Completed
+16    | Negamax      | 0.2015     | 740             | Completed
+17    | Alpha-Beta   | 0.0657     | 194             | Completed
+18    | Negamax      | 0.1819     | 616             | Completed
+19    | Alpha-Beta   | 0.0390     | 136             | Completed
+20    | Negamax      | 0.0835     | 341             | Completed
+21    | Alpha-Beta   | 0.0228     | 86              | Completed
+22    | Negamax      | 0.0903     | 336             | Completed
+23    | Alpha-Beta   | 0.0409     | 131             | Completed
+24    | Negamax      | 0.0899     | 327             | Completed
+25    | Alpha-Beta   | 0.0187     | 69              | Completed
+26    | Negamax      | 0.0271     | 121             | Completed
+27    | Alpha-Beta   | 0.0139     | 43              | Completed
+28    | Negamax      | 0.0301     | 115             | Completed
+29    | Alpha-Beta   | 0.0123     | 46              | Completed
+30    | Negamax      | 0.0213     | 84              | Completed
+31    | Alpha-Beta   | 0.0090     | 38              | Completed
+32    | Negamax      | 0.0072     | 30              | Completed
+33    | Alpha-Beta   | 0.0143     | 44              | Completed
+34    | Negamax      | 0.0051     | 14              | Completed
+35    | Alpha-Beta   | 0.0041     | 12              | Completed
+36    | Negamax      | 0.0019     | 6               | Completed
 -----------------------------------------------------------------
 WINNER: Negamax wins on move 37!
 
 
 === FINAL RESULTS FOR PRESENTATION ===
 Average Execution Time (Depth 4):
-  Negamax:    0.1561 seconds
-  Alpha-Beta: 0.0366 seconds
-  Speedup:    4.26x faster
+  Negamax:    0.3021 seconds
+  Alpha-Beta: 0.0679 seconds
+  Speedup:    4.45x faster
 
 Average Nodes Expanded (Depth 4):
   Negamax:    1093 nodes
