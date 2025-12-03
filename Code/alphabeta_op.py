@@ -1,72 +1,80 @@
 import connect4_board as c4
-import numpy as np
 import sys
-import copy
+import heuristic as h
+import time 
 
 COL_ORDER = [3,4,2,5,1,6,0]
+SEARCH_DEPTH = 5 
+NODES_VISITED = 0
 
-def alphabeta(alpha, beta, position=c4.position):
+def alphabeta(position, depth, alpha, beta):
+    global NODES_VISITED
+    NODES_VISITED += 1
+
     piece = c4.PLAYER1_PIECE if position.get_move()%2 == 0 else c4.PLAYER2_PIECE
-    best_position = position.copy
-    if(position.tie_board()):
-        return [0, best_position]; 
-    maximum = (c4.COL_COUNT*c4.ROW_COUNT-1 - position.get_move())/2;	
-    if(beta > maximum):
-        beta = maximum                     
-        if(alpha >= beta):
-            return [beta, best_position]
+    
+    if position.winning_move(c4.PLAYER1_PIECE) or position.winning_move(c4.PLAYER2_PIECE):
+        return [1000000000 + depth, position]
+    
+    if position.tie_board() or depth == 0:
+        return [h.score_position(position, piece), position]
         
-    best_score = -c4.COL_COUNT*c4.ROW_COUNT
-    for col in range(c4.COL_COUNT):
-        if(position.is_valid_location(COL_ORDER[col])):
+    best_position = position.copy()
+    best_score = -float('inf')
+
+    for i in range(c4.COL_COUNT):
+        col = COL_ORDER[i]
+        if position.is_valid_location(col):
             next_posistion = position.copy()
-            next_posistion.drop_piece(COL_ORDER[col], piece)
-            if(next_posistion.winning_move(piece)):
-                return [(c4.COL_COUNT*c4.ROW_COUNT+1 - next_posistion.get_move())/2,next_posistion]
-            score = -alphabeta(-beta, -alpha, next_posistion)[0]
-            if(score>best_score): 
+            next_posistion.drop_piece(col, piece)
+            
+            score = -alphabeta(next_posistion, depth - 1, -beta, -alpha)[0]
+            
+            if score > best_score: 
                 best_score = score
                 best_position = next_posistion
-                if(score >= beta): return [score,best_position]  
-                if(score > alpha): alpha = score
-    return [alpha,best_position]         
+                
+            alpha = max(alpha, best_score)
+            if alpha >= beta: 
+                break 
+                 
+    return [best_score, best_position]         
 
 if __name__ == "__main__":
     try:
         player = int(sys.argv[1])
-        if(not(player == 0 or player == 1)):
+        if not (player == 0 or player == 1):
             print("invalid argument")
             sys.exit()
         turn = 0
     except Exception as e:
         print("invalid argument")
         sys.exit()
+        
     board = c4.position()
     board.print_board()
-    while not(board.tie_board()):
-        if(turn == player):
-            try:
-                # Ask player for input
-                col = input(f"Player {turn + 1} make your move (0–6): ")
+    
+    while not board.tie_board():
+        current_piece = c4.PLAYER1_PIECE if turn == 0 else c4.PLAYER2_PIECE
 
-                # Validate input is numeric
-                if not col.isdigit():
+        if turn == player:
+            try:
+                col_input = input(f"Player {turn + 1} make your move (0–6): ")
+
+                if not col_input.isdigit():
                     print("Invalid input — please enter a number between 0 and 6.")
                     continue
 
-                col = int(col)
+                col = int(col_input)
 
-                # Validate input range
                 if col < 0 or col >= c4.COL_COUNT:
                     print("Invalid column — choose a number between 0 and 6.")
                     continue
 
-                # Validate column availability
                 if not board.is_valid_location(col):
                     print("That column is full. Try another one.")
                     continue
 
-                # Drop the piece
                 piece = c4.PLAYER1_PIECE if turn == 0 else c4.PLAYER2_PIECE
                 board.drop_piece(col, piece)
                 board.print_board()
@@ -75,12 +83,29 @@ if __name__ == "__main__":
                     print(f"Player {turn + 1} wins!")
                     break
 
-                # Alternate turns
                 turn = (turn + 1) % 2
 
             except Exception as e:
                 print(f"Error: {e}. Please try again.")
         else:
-            board = alphabeta(-float("inf"), float("inf"), board)[1]
+            print("AI is thinking (Optimized)...")
+            
+            NODES_VISITED = 0
+            start_time = time.time()
+            
+            best_move_result = alphabeta(board, SEARCH_DEPTH, -float('inf'), float('inf'))
+            board = best_move_result[1]
+            
+            end_time = time.time()
+            print(f"Stats -> Depth: {SEARCH_DEPTH} | Time: {end_time - start_time:.4f}s | Nodes: {NODES_VISITED}")
+            
             board.print_board()
+
+            if board.winning_move(current_piece):
+                print(f"Player {turn + 1} wins!")
+                break
+
             turn = (turn + 1) % 2
+            
+    if board.tie_board():
+        print("Game is a tie!")

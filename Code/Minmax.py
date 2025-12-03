@@ -1,11 +1,11 @@
 import connect4_board as c4
-import numpy as np
 import sys
 import heuristic as h
 import time  # Metric: Import time library
 
 # Metric: Global counter for nodes
 NODES_VISITED = 0
+SEARCH_DEPTH = 5
 
 def negmax(position, depth):
     # Metric: Increment counter every time the function is called
@@ -14,7 +14,7 @@ def negmax(position, depth):
 
     currentPiece = c4.PLAYER1_PIECE if position.get_move() % 2 == 0 else c4.PLAYER2_PIECE
     if position.winning_move(c4.PLAYER1_PIECE) or position.winning_move(c4.PLAYER2_PIECE):
-        score = (c4.COL_COUNT * c4.ROW_COUNT + 1 - position.get_move()) / 2 
+        
         return [1000000000, position]
         
     if position.tie_board():
@@ -49,7 +49,6 @@ if __name__ == "__main__":
         print("Invalid Argument: Please try again")
         sys.exit()
     
-    # FIXED: Added parentheses to initialize the class correctly
     board = c4.position() 
     board.print_board()
     
@@ -92,8 +91,7 @@ if __name__ == "__main__":
             NODES_VISITED = 0           # Reset counter
             start_time = time.time()    # Start timer
             
-            # Set a depth of 5 for default running
-            DEPTH = 5
+            DEPTH = SEARCH_DEPTH
             best_move_result = negmax(board, DEPTH)
             
             end_time = time.time()      # End timer

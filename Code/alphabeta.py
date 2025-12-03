@@ -1,11 +1,11 @@
 import connect4_board as c4
-import numpy as np
 import sys
 import heuristic as h
 import time # Metric: Import time library
 
 # Metric: Global counter for nodes
 NODES_VISITED = 0
+SEARCH_DEPTH = 5
 
 def alphabeta(position, depth, alpha, beta):
     # Metric: Increment counter
@@ -13,7 +13,7 @@ def alphabeta(position, depth, alpha, beta):
     NODES_VISITED += 1
 
     if position.winning_move(c4.PLAYER1_PIECE) or position.winning_move(c4.PLAYER2_PIECE):
-        return [999999 + depth, position]
+        return [1000000000 + depth, position]
     
     # NOTE: 'piece' was undefined in your original code here; assuming standard check logic or relying on global turn. 
     # For safety in score_position, we usually need to know whose turn it is. 
@@ -94,7 +94,7 @@ if __name__ == "__main__":
             NODES_VISITED = 0           # Reset counter
             start_time = time.time()    # Start timer
             
-            DEPTH = 6
+            DEPTH = SEARCH_DEPTH
             best_move_result = alphabeta(board, DEPTH, -float('inf'), float('inf'))
             
             end_time = time.time()      # End timer
