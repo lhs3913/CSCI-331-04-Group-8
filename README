@@ -1,3 +1,3 @@
 Group member contributions:
   Luke Sims: Wrote all the code for the GUI and the board. Created code for data collection and conversion into graphs.
-  Olm
+  Om: Modified board to make it easier to work with and implemented negmax and apha beta algorithms 
